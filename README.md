@@ -14,6 +14,7 @@
 ```console
 HTTPS = https://github.com/shahbazlist/assignment.git
 SSH = git@github.com:shahbazlist/assignment.git
+
 git clone git@github.com:shahbazlist/assignment.git
 ```
 
@@ -22,6 +23,21 @@ git clone git@github.com:shahbazlist/assignment.git
 ```console
 composer install
 npm install
+```
+
+**Database & env creation**
+
+-   Create database called - `laradashboard`
+-   Create `.env` file by copying `.env.example` file
+```bash
+cp .env.example .env
+```
+
+**Generate Artisan Key or necessary linkings**
+
+```console
+php artisan key:generate
+php artisan storage:link
 ```
 
 ## About Laravel
