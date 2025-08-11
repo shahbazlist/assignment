@@ -23,11 +23,12 @@ git clone git@github.com:shahbazlist/assignment.git
 ```console
 composer install
 npm install
+npm run dev
 ```
 
 **Database & env creation**
 
--   Create database called - `laradashboard`
+-   Create database called - `assignment_shahbaz`
 -   Create `.env` file by copying `.env.example` file
 ```bash
 cp .env.example .env
@@ -37,8 +38,29 @@ cp .env.example .env
 
 ```console
 php artisan key:generate
-php artisan storage:link
 ```
+**Add Super Admin**
+
+```console
+php artisan migrate
+php artisan db:seed RolesSeeder
+php artisan db:seed RoleAssignSeeder
+```
+
+**Add SMTTP MAIL With MailTrip**
+
+```console
+link = https://mailtrap.io
+Create account in mailtrip
+Set Credential in .env file
+```
+
+**Login Credentail**
+
+```console
+Url : http://127.0.0.1:8000/login
+Email : super@admin.com
+Password : 12345678
 
 ## About Laravel
 
