@@ -15,11 +15,11 @@ class DashboardService
     public function getUsers($tab, $filter = null)
     {
         $paginate = $tab == 'dashboard' ? 2 : 10;
-
+        
         $roleIds = Auth::user()->roles->first()->id;
         $urls = null;
-        $view = '';
-        $roles = '';
+        $view = null;
+        $roles = null;
         if ($roleIds == 1) {
             $view = 'super-admin.' . $tab;
         }
@@ -35,6 +35,9 @@ class DashboardService
         
         $urls = ShortUrl::when(Auth::user()->roles->first()->id == 3, function ($query) {
                 $query->where('user_id', Auth::id());
+            })
+            ->when(Auth::user()->roles->first()->id != 1, function ($query) {
+                $query->byParentUsers();
             })
             ->when($filter, function ($query, $filter) {
                 switch ($filter) {
@@ -54,11 +57,11 @@ class DashboardService
                         break;
                 }
             })
-            ->byParentUsers()
+            // ->byParentUsers()
             ->with('user')
             ->latest()
             ->paginate(2);
-
+            // dd($urls);
 
         $user = User::withCount('shortUrls')
             ->withSum('shortUrls', 'hits')
@@ -83,6 +86,7 @@ class DashboardService
                         break;
                 }
             })
+            // ->orWhere('id','!=', Auth::id())
             ->latest()
             ->paginate($paginate);
 
@@ -91,7 +95,7 @@ class DashboardService
 
     public function getAllUrl($filter = null)
     {
-        $ParentUsers = User::where('parent_id', Auth::id())->pluck('id');
+        $parentUsers = User::where('parent_id', Auth::id())->pluck('id')->push(Auth::id()); 
         return ShortUrl::when($filter, function ($query, $filter) {
                 switch ($filter) {
                     case '1':
@@ -110,8 +114,8 @@ class DashboardService
                         break;
                 }
             })
-            ->when(Auth::user()->roles->first()->id != 3, function ($query, $ParentUsers) {
-                $query->whereIn('user_id', $ParentUsers);
+            ->when(Auth::user()->roles->first()->id == 2, function ($query) use ($parentUsers) {
+                $query->whereIn('user_id', $parentUsers);
             })
             ->when(Auth::user()->roles->first()->id == 3, function ($query) {
                 $query->where('user_id', Auth::id());
@@ -133,7 +137,7 @@ class DashboardService
         $user = User::create($data);
         $roleIds = Auth::user()->roles->first()->id;
         if ($roleIds == 1) {
-            $role = Role::find(1);
+            $role = Role::find(2);
             if ($role) {
                 $user->assignRole($role);
             }

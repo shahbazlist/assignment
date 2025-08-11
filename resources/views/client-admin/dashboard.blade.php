@@ -21,9 +21,9 @@
                             <option value="4" @if (request('filter') == '4') selected @endif>Today</option>
                         </select>
 
-                        <button class="btn btn-success">
-                            Download
-                        </button>
+                        <a class="btn btn-success" href="{{route('export-shorturl', ['filter' => request('filter')])}}">
+                                Download
+                            </a>
                     </div>
                 </div>
                 <div class="alert alert-success success-message" role="alert" style="display: none"></div>
@@ -55,7 +55,7 @@
 
                 @if ($urls->total() > $urls->perPage())
                     {{ 'Showing ' . $urls->lastItem() . ' of total ' . $urls->total() }}
-                    <a href="{{ route('dashboard', 'all-url') }}" class="btn btn-success">View All</a>
+                    <a href="{{ route('dashboard.shorurl_all') }}" class="btn btn-success">View All</a>
                 @endif
 
             </div>

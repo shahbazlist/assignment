@@ -23,9 +23,9 @@
                             <option value="4" @if (request('filter') == '4') selected @endif>Today</option>
                         </select>
 
-                        <button class="btn btn-success">
-                            Download
-                        </button>
+                        <a class="btn btn-success" href="{{route('export-shorturl', ['filter' => request('filter')])}}">
+                                Download
+                            </a>
                     </div>
                 </div>
 

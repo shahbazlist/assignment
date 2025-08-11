@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ShortUrlExport;
 use App\Http\Requests\StoreUrlRequest;
 use App\Models\ShortUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ShortUrlController extends Controller
 {
@@ -30,5 +32,13 @@ class ShortUrlController extends Controller
         $shortUrl = ShortUrl::where('token', 's/'.$token)->firstOrFail();
         $shortUrl->increment('hits');
         return redirect()->away($shortUrl->url);
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new ShortUrlExport($request->filter),
+            'shorturls.xlsx'
+        );
     }
 }
