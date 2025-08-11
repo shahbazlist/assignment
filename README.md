@@ -45,9 +45,10 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed RolesSeeder
 php artisan db:seed RoleAssignSeeder
+php artisan serve
 ```
 
-**Add SMTTP MAIL With MailTrip**
+**Add SMTP MAIL With MailTrip**
 
 ```console
 link = https://mailtrap.io
